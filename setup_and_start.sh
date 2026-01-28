@@ -79,7 +79,7 @@ PY
 # 5) Start uvicorn (background)
 UVICORN_LOG=uvicorn.log
 echo "Starting uvicorn in background (logs -> $UVICORN_LOG)..."
-nohup .venv/bin/uvicorn main:app --reload --host 127.0.0.1 --port 8000 > "$UVICORN_LOG" 2>&1 &
+nohup .venv/bin/uvicorn main:app --reload --host 0.0.0.0 --port 8000 > "$UVICORN_LOG" 2>&1 &
 UVICORN_PID=$!
 echo "Uvicorn started (PID $UVICORN_PID)."
 
@@ -101,7 +101,7 @@ EOF
     echo "Created .streamlit/secrets.toml with default API_BASE"
   fi
 
-  nohup .venv/bin/streamlit run streamlit_app.py --server.port "$STREAMLIT_PORT" > "$STREAMLIT_LOG" 2>&1 &
+  nohup .venv/bin/streamlit run streamlit_app.py --server.port "$STREAMLIT_PORT" --server.address 0.0.0.0 > "$STREAMLIT_LOG" &
   STREAMLIT_PID=$!
   echo "Streamlit started (PID $STREAMLIT_PID)."
 else
