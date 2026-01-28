@@ -32,5 +32,8 @@ EXPOSE 8000
 # Healthcheck for orchestration
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s CMD curl -f http://127.0.0.1:8000/health || exit 1
 
-# Default command - try gunicorn if available, otherwise fall back to uvicorn
-CMD ["sh", "-c", "if command -v gunicorn >/dev/null 2>&1; then exec gunicorn -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8000 --workers 1; else exec python -m uvicorn main:app --host 0.0.0.0 --port 8000; fi"]
+# Ensure the script is executable within the container
+RUN chmod +x /app/setup_and_start.sh
+
+# Default command - Use the custom startup script with the flag to start Streamlit
+CMD ["/app/setup_and_start.sh", "--start-streamlit"]
