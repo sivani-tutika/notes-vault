@@ -40,3 +40,8 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=5s CMD curl -f http://127
 
 # Start all services using supervisord
 CMD ["/usr/bin/supervisord", "-n"]
+# Ensure the script is executable within the container
+RUN chmod +x /app/setup_and_start.sh
+
+# Default command - Use the custom startup script with the flag to start Streamlit
+CMD ["/app/setup_and_start.sh", "--start-streamlit"]
